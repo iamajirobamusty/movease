@@ -1,47 +1,23 @@
-export class User {
-    constructor(username, email, password) {
-        this._username = username;
-        this._email = email;
-        this._password = password;
-    }
+import mongoose from "mongoose"
 
-    get username() {
-        return this.username
-    }
+export const userSchema = new mongoose.Schema({
+    _id: UUID,
+    userName: string,
+    email: string,
+    password: string
+})
 
-    set username(value) {
-        this._username = value;
-    }
+export const driverSchema = new mongoose.Schema({
+    _id: UUID,
+    userName: string,
+    email: string,
+    password: string,
+    plateNumber: UUID,
+})
 
-    get email() {
-        return this._email;
-    }
-
-    set email(value) {
-        this._email = value;
-    }
-
-    get password() {
-        return this._password;
-    }
-
-    set password(value)  {
-        this._password = value;
-    }
-
-
-}
-
-export class Admin extends User {
-    constructor(name, email, password) {
-        super(name, email, password);
-    }
-
-
-}
-
-export class Driver extends User {
-    constructor(name, email, password) {
-        super(name, email, password);
-    }
-}
+export const adminSchema = new mongoose.Schema({
+    _id: UUID,
+    username: string,
+    email: string,
+    password: string,
+})
