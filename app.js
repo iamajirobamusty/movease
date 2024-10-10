@@ -91,19 +91,19 @@ app.post('/register/admin',(req, res) => {
     if (Admin.findOne({email: req.body.email})) {
         res.send('Email exists, create an account with a unique email');
     } else {
-        createAdmin();
+        createAdmin(req.body.username, req.body.email, req.body.password);
     }
 });
 
 app.get('/register/admin', (req, res) => {
-    res.send(` <form action="/login" method="POST">
+    res.send(` <form action="/register/admin" method="POST">
         <label for="username">Username:</label>
         <input type="text" id='username' name='username'></input>
         <label for="email">Email:</label>
         <input type="text" id='email' name='email'></input>
         <label for="password">Password:</label>
         <input type='password' id='password' name='password'></input>
-        <input type='submit' value='Login',/>
+        <input type='submit' value='Register',/>
     </form>
     `)
 })

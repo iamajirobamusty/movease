@@ -95,7 +95,7 @@ export let createAdmin = async (username, email, password) => {
     });
 
     await newAdmin.save();
-    console.log('User created with UUID:', newUser._id);
+    console.log('User created with UUID:', newAdmin._id);
     
 };
 
