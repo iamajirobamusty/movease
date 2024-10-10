@@ -63,16 +63,17 @@ app.get('/register', (req, res) => {
     
 });
 
-app.post('/register/driver',(req, res) => {
-    if (Driver.findOne({email: req.body.email})) {
+app.post('/register/driver', async (req, res) => {
+    if ( await Driver.findOne({email: req.body.email})) {
         res.send('Email exists, create an account with a unique email');
     } else {
-        createDriver();
+        createDriver(req.body.username, req.body.email, req.body.password, req.body.plateNumber);
+        res.send('created')
     }
 });
 
 app.get('/register/driver', (req, res) => {
-    res.send(` <form action="/login" method="POST">
+    res.send(` <form action="/register/driver" method="POST">
         <label for="username">Username:</label>
         <input type="text" id='username' name='username'></input>
         <label for="plateNumber">Plate Number:</label>
@@ -81,7 +82,7 @@ app.get('/register/driver', (req, res) => {
         <input type="text" id='email' name='email'></input>
         <label for="password">Password:</label>
         <input type='password' id='password' name='password'></input>
-        <input type='submit' value='Login',/>
+        <input type='submit' value='Register',/>
     </form>
     `)
 })

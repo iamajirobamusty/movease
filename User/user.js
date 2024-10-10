@@ -108,7 +108,7 @@ export let createDriver = async (username, email, password, plateNumber) => {
     });
 
     await newDriver.save();
-    console.log('User created with UUID:', newUser._id);
+    console.log('User created with UUID:', newDriver._id);
     
 };
 
