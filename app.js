@@ -22,16 +22,19 @@ app.get('/', (req, res) => {
 });
 
 
-app.post('/login', (req, res) => {
-    if (User.findOne({emial: req.body.email}) && bcrypt.compare(User.password, req.body.password)) {
-        console.log('Welcome')
+app.post('/login', async (req, res) => {
+    let user = await getOneUser(req.body.email)
+    if (user && bcrypt.compare(req.body.password, user.password)) {
+        res.send('OK')
+    } else {
+        res.send('Username or password incorrect')
     }
 })
 
 app.get('/login', (req, res) => {
     res.send(` <form action="/login" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id='username' name='username'></input>
+        <label for="email">email:</label>
+        <input type="text" id='email' name='email'></input>
         <label for="password">Password:</label>
         <input type='password' id='password' name='password'></input>
         <input type='submit' value='Login',/>

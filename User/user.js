@@ -115,7 +115,7 @@ export let createDriver = async (username, email, password, plateNumber) => {
 export async function getUser() {
     try {
         const user = await User.find({});
-        return true
+        return user
     } catch(err) {
         console.error(err)
     }
@@ -124,8 +124,7 @@ export async function getUser() {
 export async function getOneUser(email) {
     const user = await User.findOne({email: email})
     if (user) {
-        console.log(User.email)
-        return true;
+        return user;
     } else {
         return false;
     }
