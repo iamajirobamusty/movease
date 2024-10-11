@@ -2,7 +2,9 @@ import express, { request } from 'express';
 import { mongoose } from 'mongoose';
 import { User, Admin, Driver, getUser, getOneUser, createAdmin, createDriver, createUser } from './User/user.js';
 import bcrypt from 'bcrypt';
-
+import  session from 'express-session'
+import MongoStore from 'connect-mongo'
+import crypto from 'crypto'
 
 const app = express();
 
@@ -12,13 +14,32 @@ app.use(express.urlencoded({extended: true}))
 const dbName = 'movease';
 const url = `mongodb://192.168.56.3:27017/${dbName}`;
 mongoose.connect(url).then(() => console.log('Connected successfully')).catch((err) => console.log(err));
+const secretKey = crypto.randomBytes(64).toString('hex');
 
-
+app.use(session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://192.168.56.3:27017/sessionDB',
+        collection: 'session',
+        ttl: 14 * 24 * 60 * 60
+    }),
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
 
 
 app.get('/', (req, res) => {
-    res.send(req.headers);
-    res.send('Hello')
+    if (req.session.views) {
+        console.log(req.session)
+        req.session.views++;
+        res.send('Welcome back') 
+    } else {
+        req.session.views = 1
+        res.send('Frist time')
+    }
 });
 
 
@@ -42,7 +63,6 @@ app.get('/login', (req, res) => {
     `)
 })
 app.post('/register', async (req, res) => { 
-    console.log( await getOneUser(req.body.email))  
     if ( await getOneUser(req.body.email)){
         res.send('Email already used. Create with a unique email')
     } else {
@@ -67,7 +87,7 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register/driver', async (req, res) => {
-    if ( await Driver.findOne({email: req.body.email})) {
+    if ( await getOneUser(req.body.email)) {
         res.send('Email exists, create an account with a unique email');
     } else {
         createDriver(req.body.username, req.body.email, req.body.password, req.body.plateNumber);
@@ -90,8 +110,8 @@ app.get('/register/driver', (req, res) => {
     `)
 })
 
-app.post('/register/admin',(req, res) => {
-    if (Admin.findOne({email: req.body.email})) {
+app.post('/register/admin', async (req, res) => {
+    if (await getOneUser(req.body.email)) {
         res.send('Email exists, create an account with a unique email');
     } else {
         createAdmin(req.body.username, req.body.email, req.body.password);

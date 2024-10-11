@@ -91,7 +91,6 @@ export let createAdmin = async (username, email, password) => {
         username: username,
         email: email,
         password: email,
-        plateNumber: plateNumber
     });
 
     await newAdmin.save();
