@@ -122,11 +122,13 @@ export async function getUser() {
 
 export async function getOneUser(email) {
     const user = await User.findOne({email: email})
-    if (user) {
-        return user;
-    } else {
-        return false;
-    }
+    const admin = await Admin.findOne({email: email})
+    const driver = await Driver.findOne({email: email})
+    if (user) return user;
+    if (admin) return admin;
+    if (driver) return driver;
+    return false;
+
 }
 
 export let User = mongoose.model('User', userSchema);
