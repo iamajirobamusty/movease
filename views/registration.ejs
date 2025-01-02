@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/reg.css' />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Register Here</h1>
+        <form action="/auth/register" method="POST">
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" name="confirm-password" id="confirm-password" required>
+            </div>
+            <div class="input-group">
+                <button type="submit" class="btn">Register</button>
+            </div>
+        </form>
+    </div>
+    
+</body>
+
+</html>

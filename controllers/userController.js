@@ -1,54 +1,47 @@
 const { User } = require('../models');
 
-const getUsers = async (req, res) => {
-    try {
-        const users = await User.find();
-        res.status(200).json('Users found')
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
 
-const createUser = async (req, res) => {
+const createUser = async (req) => {
     try {
         const newUser = new User(req.body);
         const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        console.log(savedUser)
+        return (savedUser)
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        return err.message;
     }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req) => {
     try {
         const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json({ message: 'user not found' });
-        res.status(200).json(user);
+        if (!user) return "User not found";
+        return user;
     } catch (err) {
-        res.status(500).json({ err: err.message })
+        return err.message
     }
 }
 
-const updateUser = async (req, res) => {
+const updateUser = async (req) => {
     try {
         const updatedUser = await User.findById(req.params.id, req.body, {
             new: true,
             runValidators: true
         })
-        if (!updatedUser) return res.status(404).json({ message: 'User not found' });
-        res.status(200).json(updateUser);
+        if (!updatedUser) return 'User not found';
+        return (updateUser);
     } catch (err) {
-        res.status(400).json({ error: err.message })
+        return err.message;
     }
 }
 
 const deleteUser = async (req, res) => {
     try {
         const deletedUser = await User.findByIdAndDelete(req.params.id);
-        if (!deletedUser) return res.status(404).json({ message: "User not found" });
-        res.status(200).json({ message: "User deleted successfully" });
+        if (!deletedUser) return "User not found";
+        return "User deleted successfully";
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        return err.message;
     }
 }
-module.exports = { getUsers, createUser, getUser, updateUser, deleteUser };
+module.exports = { createUser, getUser, updateUser, deleteUser };
