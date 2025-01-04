@@ -3,6 +3,8 @@ const { body, validationResult, matchedData } = require('express-validator');
 const router = express.Router();
 const { createUser, getUser, updateUser, deleteUser } = require('../controllers/userController');
 const { User } = require('../models')
+const bcrypt = require('bcrypt');
+
 
 router.post('/register',
     [
@@ -45,7 +47,7 @@ router.post('/register',
             })
 
     ],
-    (req, res, next) => {
+    async (req, res, next) => {
         const result = validationResult(req);
         if (!result.isEmpty()) {
             //const errorMessage = {};
@@ -54,13 +56,12 @@ router.post('/register',
             //});
             // const queryParams = new URLSearchParams(errorMessage).toString();
             const errors = result.array();
-            console.log(errors[0].path)
             return res.render('registration', { title: 'Registration Page', errors: errors });
         }
-        const data = matchedData(req);
-        console.log(data)
-        const user = createUser(req)
-        res.render('home_page', { title: 'Home Page' });
+        const password = req.body.password;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = createUser(req.body.name, req.body.email, hashedPassword);
+        res.redirect('/');
     });
 
 router.get('/register', (req, res, next) => {
