@@ -61,18 +61,36 @@ router.post('/register',
         const password = req.body.password;
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = createUser(req.body.name, req.body.email, hashedPassword);
-        res.redirect('/');
+        return res.redirect('/home');
     });
 
 router.get('/register', (req, res, next) => {
     res.render('registration', { title: "Registration Page", errors : [] })
 });
 
-router.post('/login', (req, res, next) => {
-    const { name, email, password } = req.body;
-    console.log(name, email, password)
-
-    res.render('home_page', { title: "Home Page" })
+router.post('/login',
+    [
+        body('email')
+            .isEmail()
+            .withMessage('Invalid email! Kindly provide a valid email address.')
+            .custom(async (value) => {
+                const user = await User.findOne({ email: value });
+                if (!user) {
+                    throw new Error("This user does not exist.");
+                }
+                return true;
+            })
+            .normalizeEmail()
+            .trim()
+            .escape(),
+    ],
+     async (req, res, next) => {
+        const result = validationResult(req);
+        if (result.isEmpty()) {
+            return res.redirect('/home')
+        }
+        const errors = result.array();
+        res.render('login', { title: "Login", errors: errors })
 });
 
 router.get('/login', (req, res, next) => {

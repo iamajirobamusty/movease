@@ -11,9 +11,9 @@ const createUser = async (name, email, password) => {
     }
 };
 
-const getUser = async (req) => {
+const getUser = async (email) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findOne({ email });
         if (!user) return "User not found";
         return user;
     } catch (err) {
