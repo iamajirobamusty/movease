@@ -71,11 +71,12 @@ router.get('/register', (req, res, next) => {
 router.post('/login', (req, res, next) => {
     const { name, email, password } = req.body;
     console.log(name, email, password)
+
     res.render('home_page', { title: "Home Page" })
 });
 
 router.get('/login', (req, res, next) => {
-    res.render('login', { title: "Login" })
+    res.render('login', { title: "Login", errors: [] })
 })
 
 module.exports = router;
