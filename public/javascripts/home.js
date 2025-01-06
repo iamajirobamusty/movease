@@ -23,6 +23,16 @@ const userCircle = L.circle([0, 0], {
 
 function updateLocation(position) {
     const { latitude, longitude, accuracy } = position.coords;
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+
+    fetch(url).then((response) => console.log(response.json()));
+
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            const locationName = data.address.city || data.address.town || data.address.village || "Unknown location";
+            console.log(locationName);
+        })
 
     userMarker.setLatLng([latitude, longitude]).openPopup();
     userCircle.setLatLng([latitude, longitude]);
@@ -38,7 +48,7 @@ function updateLocation(position) {
     const distance = userLatLng.distanceTo(destinationCoords);
 
     //update the pop up with the distance
-    userMarker.bindPopup(`Your location <b>distance to ketu</b>: ${distance}`).openPopup();
+    userMarker.bindPopup(`Your location <b>distance to ketu</b>: ${(distance / 1000).toFixed(2)} km`).openPopup();
 }
 
 //handle error in getting locatoin
