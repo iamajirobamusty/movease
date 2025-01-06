@@ -9,13 +9,17 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //add a marker
 const userMarker = L.marker([0, 0]).addTo(map).bindPopup("Your location");
 
+const destinationCoords = [6.5973, 3.3904]; //fixed coordinate for ketu Lagos
+const destinationMarker = L.marker(destinationCoords).addTo(map).bindPopup('Ketu Lagos')
+
+
 // Add a circle (default position and size)
-    const userCircle = L.circle([0, 0], {
-        color: 'blue',
-        fillColor: '#3f8efc',
-        fillOpacity: 0.2,
-        radius: 100, // Default radius in meters
-    }).addTo(map);
+const userCircle = L.circle([0, 0], {
+    color: 'blue',
+    fillColor: '#3f8efc',
+    fillOpacity: 0.2,
+    radius: 100, // Default radius in meters
+}).addTo(map);
 
 function updateLocation(position) {
     const { latitude, longitude, accuracy } = position.coords;
@@ -27,6 +31,14 @@ function updateLocation(position) {
 
     //update the map view and marker position
     map.setView([latitude, longitude], 15); //zoom to user locaatoin
+
+    //calculate the distance between user and destination
+    const userLatLng = L.latLng(latitude, longitude);
+    const destLatLng = L.latLng(destinationCoords);
+    const distance = userLatLng.distanceTo(destinationCoords);
+
+    //update the pop up with the distance
+    userMarker.bindPopup(`Your location <b>distance to ketu</b>: ${distance}`).openPopup();
 }
 
 //handle error in getting locatoin
@@ -43,9 +55,9 @@ if (navigator.geolocation) {
         maximumAge: 0,
     });
 
-    
+
 } else {
-        alert("Geolocatoin is not supported by your browser")
+    alert("Geolocatoin is not supported by your browser")
 }
 
 
