@@ -6,6 +6,8 @@ var logger = require('morgan');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
+const MongoStore = require('connect-mongo');
+const session = require('express-session');
 
 var indexRouter = require('./routes/index');
 const authRoutes = require('./routes/authRoutes');
@@ -27,6 +29,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/javascripts', express.static(path.join(__dirname, 'public/javascripts')));
 app.use('/stylesheets', express.static(path.join(__dirname, 'public/stylesheets')));
+app.use(session({
+  secret: process.env.SECRETE_KEY,
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: 'sessions',
+    ttl: 14 * 24 * 60 * 60
+  }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24 },
+})
+);
+
+//Protect route
+const isAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+    next();
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+}
 
 app.use('/', indexRouter);
 app.use('/auth', authRoutes);
@@ -35,6 +58,9 @@ app.use('/auth', authRoutes);
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
+
+
 
 
 // error handler

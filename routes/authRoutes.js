@@ -5,6 +5,15 @@ const { createUser, getUser, updateUser, deleteUser } = require('../controllers/
 const { User } = require('../models')
 const bcrypt = require('bcrypt');
 
+//Protect route
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        next();
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+}
+
 
 router.post('/register',
     [
@@ -52,7 +61,7 @@ router.post('/register',
         if (!result.isEmpty()) {
             //const errorMessage = {};
             //result.array().forEach((error) => {
-             //   errorMessage[`${error.param}Error`] = error.msg;
+            //   errorMessage[`${error.param}Error`] = error.msg;
             //});
             // const queryParams = new URLSearchParams(errorMessage).toString();
             const errors = result.array();
@@ -65,7 +74,7 @@ router.post('/register',
     });
 
 router.get('/register', (req, res, next) => {
-    res.render('registration', { title: "Registration Page", errors : [] })
+    res.render('registration', { title: "Registration Page", errors: [] })
 });
 
 router.post('/login',
@@ -84,17 +93,26 @@ router.post('/login',
             .trim()
             .escape(),
     ],
-     async (req, res, next) => {
+    async (req, res, next) => {
         const result = validationResult(req);
         if (result.isEmpty()) {
+            const user = await User.findOne({ email: req.body.email });
+            req.session.user = { id: user._id, username: user.name }
             return res.redirect('/home')
         }
         const errors = result.array();
         res.render('login', { title: "Login", errors: errors })
-});
+    });
 
 router.get('/login', (req, res, next) => {
     res.render('login', { title: "Login", errors: [] })
+})
+
+router.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) return res.status(500).send('Error logging out');
+        res.redirect('login')
+    })
 })
 
 module.exports = router;
