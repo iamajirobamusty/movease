@@ -25,6 +25,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/javascripts', express.static(path.join(__dirname, 'public/javascripts')));
+app.use('/stylesheets', express.static(path.join(__dirname, 'public/stylesheets')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRoutes);
