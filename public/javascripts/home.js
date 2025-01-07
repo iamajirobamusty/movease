@@ -12,6 +12,8 @@ const userMarker = L.marker([0, 0]).addTo(map).bindPopup("Your location");
 const destinationCoords = [6.5973, 3.3904]; //fixed coordinate for ketu Lagos
 const destinationMarker = L.marker(destinationCoords).addTo(map).bindPopup('Ketu Lagos')
 
+let routeLine;
+
 
 // Add a circle (default position and size)
 const userCircle = L.circle([0, 0], {
@@ -23,9 +25,7 @@ const userCircle = L.circle([0, 0], {
 
 function updateLocation(position) {
     const { latitude, longitude, accuracy } = position.coords;
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
-
-    fetch(url).then((response) => console.log(response.json()));
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&addressdetails=1`;
 
     fetch(url)
         .then((response) => response.json())
@@ -33,6 +33,9 @@ function updateLocation(position) {
             const locationName = data.address.city || data.address.town || data.address.village || "Unknown location";
             console.log(locationName);
         })
+        .catch((error) => console.error('Error fetching location name:', error));
+
+
 
     userMarker.setLatLng([latitude, longitude]).openPopup();
     userCircle.setLatLng([latitude, longitude]);
@@ -45,10 +48,17 @@ function updateLocation(position) {
     //calculate the distance between user and destination
     const userLatLng = L.latLng(latitude, longitude);
     const destLatLng = L.latLng(destinationCoords);
-    const distance = userLatLng.distanceTo(destinationCoords);
+    const distance = userLatLng.distanceTo(destLatLng);
 
     //update the pop up with the distance
     userMarker.bindPopup(`Your location <b>distance to ketu</b>: ${(distance / 1000).toFixed(2)} km`).openPopup();
+
+    if (routeLine) {
+        map.removeLayer(routeLine);
+    }
+
+    routeLine = L.polyline([userLatLng, destLatLng], { color: 'blue', weight: 4 }).addTo(map);
+
 }
 
 //handle error in getting locatoin
