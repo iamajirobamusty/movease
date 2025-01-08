@@ -1,0 +1,180 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-page {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-header {
+    margin-bottom: 20px;
+}
+
+.avatar img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.user-name {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.user-bio {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
+
+.profile-info {
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    margin-right: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.user-activity {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.user-activity h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.user-activity ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-activity li {
+    padding: 5px 0;
+    font-size: 0.9rem;
+}
+
+.follow-btn {
+    width: 100%;
+    margin-top: 15px;
+    background-color: #007bff;
+}
+
+.follow-btn:hover {
+    background-color: #218838;
+}
+
+.input-container {
+    display: none;
+    margin-top: 10px;
+}
+
+#show-input-cont {
+    margin-top: 5px;
+}
+.show-input {
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 30px;
+}
+
+i {
+    cursor: pointer;
+}
+
+/* Button styles */
+.popup-button {
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Popup container (modal) */
+.popup-container {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    width: 300px;
+}
+
+/* Overlay to dim the background */
+.overlay {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Close button */
+.close-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #666;
+    float: right;
+    cursor: pointer;
+}

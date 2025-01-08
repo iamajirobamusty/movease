@@ -11,6 +11,7 @@ const session = require('express-session');
 
 var indexRouter = require('./routes/index');
 const authRoutes = require('./routes/authRoutes');
+const profileRoutes = require('./routes/profile');
 
 dotenv.config();
 connectDB()
@@ -53,6 +54,7 @@ const isAuthenticated = (req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/auth', authRoutes);
+//app.use('/profile', profileRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
