@@ -1,5 +1,7 @@
 // Initialize the map and set its view to a chosen geographical point
 const map = L.map('map').setView([0, 0], 2);
+const searchIcon = document.getElementById('search-icon');
+const searchInput = document.getElementById('search-input');
 
 // Add a tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -70,3 +72,13 @@ if (navigator.geolocation) {
 } else {
     alert('Geolocation is not supported by your browser.');
 }
+
+
+searchIcon.addEventListener('click', () => {
+    const searchQuery = serchInput.value().trim();
+    if (searchQuery) {
+        window.location.href = `/search?query=${encodeURIComponent(searchQuery)}`
+    } else {
+        alert('Please enter a valid email');
+    }
+})

@@ -1,23 +1,67 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title><%= title %></title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"
+    />
+    <link rel="stylesheet" href="/stylesheets/home.css" />
+  </head>
 
-<head>
-    <title>
-        <%= title %>
-    </title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
-    <link rel="stylesheet" href="/stylesheets/home.css">
-</head>
+  <body>
+    <!-- Top Panel -->
+    <div class="top-panel">
+        <div class="website-name">Moovease</div>
+        <div id="search-location-div" class="search-location-div">
+            <input type="text" name="search-location" id="search-location">
+        </div>
+        <div class="icons">
+            <input type="text" name="search-input" id="search-input" placeholder="Input User Email">
+            <a href="#">
+                <i class="icon fas fa-search" id="search-icon" title="Search"></i>
+            </a>
+            <a href="/profile">
+                <i class="icon fas fa-user"  title="Profile"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div>
+                <div class="right-panel">
+                    <div class="profile-icon" title="User 1">U1</div>
+                    <div class="profile-icon" title="User 2">U2</div>
+                    <div class="profile-icon" title="User 3">U3</div>
+                    <div class="profile-icon" title="User 4">U4</div>
+                    <div class="profile-icon" title="User 5">U5</div>
+                    <div class="profile-icon" title="User 5">U5</div>
+                    <div class="profile-icon" title="User 5">U5</div>
+                    <div class="profile-icon" title="User 5">U5</div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Right Panel -->
+        <div class="map-div">
+            <!-- Example of other people's profile icons -->
+            <div id="map"></div>
+            
+        </div>
+    </div>
+    
+    <!-- FontAwesome Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 
-<body>
-    <h1>
-        MAP
-    </h1>
-    <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <script src="/javascripts/home.js"></script>
-</body>
-
+  </body>
 </html>
