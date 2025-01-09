@@ -19,7 +19,7 @@ const placeSchema = new mongoose.Schema({
     state: String,
     country: String,
     location: {
-        locationSchema,
+        type: locationSchema,
         required: true
     }
 });

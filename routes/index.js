@@ -25,6 +25,16 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
   const user = await User.findOne({ name: session_user.username })
   console.log(user);
   res.render('profile', { user: user, title: "Profile Page" })
+});
+
+router.get('/profile/:user', (req, res) => {
+  res.render('profile', { user: req.params.user });
+})
+
+router.get('/search', (req, res) => {
+  const query = req.query.query;
+  const user = User.findOne({ email: query });
+  res.redirect('/profile/user')
 })
 
 module.exports = router;
