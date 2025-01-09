@@ -35,6 +35,36 @@ router.get('/search', (req, res) => {
   const query = req.query.query;
   const user = User.findOne({ email: query });
   res.redirect('/profile/user')
+});
+
+router.get('/settings', async (req, res) => {
+  const name = req.session.user;
+  const user = await User.findOne({ name: name })
+  await user.populate('visited_locations', 'street city');
+  res.render('settings', { user: user })
+});
+
+router.post('/settings', async (req, res) => {
+  let email = req.body.email;
+  let phoneNumber = req.body.phone;
+  let password = req.body.password;
+  const name = req.session.user;
+  let user = await User.findOne({ name: name });
+
+  if (!email && email !== user.email) {
+    user.email = email
+    await user.save();
+  }
+  if (!phoneNumber && phoneNumber !== user.phoneNumber) {
+    user.phoneNumber = phoneNumber;
+    await user.save();
+  }
+  if (!password && password !== user.password) {
+    user.password = password;
+    await user.save();
+  }
+
+  res.redirect('settings');
 })
 
 module.exports = router;
